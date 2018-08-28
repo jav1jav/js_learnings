@@ -1,0 +1,29 @@
+
+h2. Objects - 
+keys are always stored as strings
+you can't use . notation with a variable. you just can't.
+literal notation refers to defining an object by listing the key pairs between {}
+
+
+
+h2. Accessing Methods
+the format is always object.method or array.method
+there are times when you go Array.method(arr) and Object.method(obj) but the things that you have been confused about are usually ok if you stick with obj.method or arr.method. 
+
+
+h2. Common mistakes you need to stop;
+* don't forget declaring let or var for the index variable in the for loop declaration section
+* don't forget putting parenz around the conditional in the if statments
+* iterating through and object and then using the . notation with the 'key' index value
+* you cant console.log an Object like you can an array. You have to JSON.stringify(obj)
+
+h2. Functions
+* functions without a return statement return undefined
+
+
+h2. When things are undefined when they are something else
+* functions without a return statement return undefined
+* accessing array value outside the index is undefined
+* array.indexOf(val) returns -1 if the value isn't in the array
+* using . notation with an object key when that key is an index in a for-in loop - that value is undefined
+

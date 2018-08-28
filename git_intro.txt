@@ -1,0 +1,333 @@
+Press enter to submit commands
+
+> git init 
+# initialized emtpy repository in /.git/
+
+$ git status
+# On branch master
+#
+# Initial commit
+#
+nothing to commit (create/copy files and use "git add" to track)
+
++ added a file to the repo
+
+$ git status
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	octocat.txt
+nothing added to commit but untracked files present (use "git add" to track)
+
+
+$ git add octocat.txt
+no return message but we've added octocat.txt to staging area
+
+$ git status
+# On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+#   (use "git rm --cached <file>..." to unstage)
+#
+#	new file:   octocat.txt
+
+$ git commit -m "Add cute octocat story"
+[master (root-commit) 20b5ccd] Add cute octocat story
+ 1 file changed, 1 insertion(+)
+ create mode 100644 octocat.txt
+
+$ git add '*.txt'
+no return message but we've added 3 *.txt files to staging area
+
+$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	new file:   blue_octocat.txt
+#	new file:   octofamily/baby_octocat.txt
+#	new file:   octofamily/momma_octocat.txt
+#	new file:   red_octocat.txt
+
+$ git commit -m 'Add all the octocat txt files'
+[master 3852b4d] Add all the octocat txt files
+ 4 files changed, 4 insertions(+)
+ create mode 100644 blue_octocat.txt
+ create mode 100644 octofamily/baby_octocat.txt
+ create mode 100644 octofamily/momma_octocat.txt
+ create mode 100644 red_octocat.txt
+
+$ git log
+commit 3852b4db1634463d0bb4d267edb7b3f9cd02ace1
+Author: Try Git <try_git@github.com>
+Date:   Sat Oct 10 08:30:00 2020 -0500
+
+    Add all the octocat txt files
+
+commit b652edfd888cd3d5e7fcb857d0dabc5a0fcb5e28
+Author: Try Git <try_git@github.com>
+Date:   Sat Oct 10 08:30:00 2020 -0500
+
+    Added cute octocat story
+
+setup a remote repository - call it origin
+$ git remote add origin https://github.com/try-git/try_git.git
+no return message 
+
+$git status
+# On branch master
+nothing to commit (working directory clean)
+?? so how would I what repos I could connect to from this repo?
+
+$ git push -u origin master
+# Branch master set up to track remote branch master from origin.
+pushign my things to origin - no status though
+
+pretend people did work on the origin - master is your local repo
+$ git pull origin master
+Updating 3852b4d..3e70b0f
+Fast-forward
+ yellow_octocat.txt |    1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 yellow_octocat.txt
+
+$ git diff head
+diff --git a/octocat.txt b/octocat.txt
+index 7d8d808..e725ef6 100644
+--- a/octocat.txt
++++ b/octocat.txt
+@@ -1 +1 @@
+-A Tale of Two Octocats
++[mA Tale of Two Octocats and an Octodog
+
+
+we added a file so lets stage it
+$ git add octofamily/octodog.txt
+
+
+let's check what's staged
+$ git diff --staged
+diff --git a/octofamily/octodog.txt b/octofamily/octodog.txt
+new file mode 100644
+index 0000000..cfbc74a
+--- /dev/null
++++ b/octofamily/octodog.txt
+@@ -0,0 +1 @@
++[mwoof
+
+
+opps let's not do that - remove octodog from staging
+$ git reset octofamily/octodog.txt
+
+git reset did a great job of unstaging octodog.txt, but you'll notice that he's still there. He's just not staged anymore. It would be great if we could go back to how things were before octodog came around and ruined the party.
+
+Files can be changed back to how they were at the last commit by using the command: git checkout -- <target>. Go ahead and get rid of all the changes since the last commit for octocat.txt
+
+$ git checkout -- octocat.txt
+no reply message 
+
+
+When developers are working on a feature or bug they'll often create a copy (aka. branch) of their code they can make separate commits to. Then when they're done they can merge this branch back into their main master branch.
+We want to remove all these pesky octocats, so let's create a branch called clean_up, where we'll do all the work:
+
+$ git branch clean_up
+no reply
+
+
+$ git branch
+tells which branch you're on
+
+$ git checkout clean_up
+Switched to branch 'clean_up'
+
+
+$ git rm '*.txt'
+rm 'blue_octocat.txt'
+rm 'octocat.txt'
+rm 'octofamily/baby_octocat.txt'
+rm 'octofamily/momma_octocat.txt'
+rm 'red_octocat.txt'
+
+$ git status
+# On branch clean_up
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	deleted:    blue_octocat.txt
+#	deleted:    octocat.txt
+#	deleted:    octofamily/baby_octocat.txt
+#	deleted:    octofamily/momma_octocat.txt
+#	deleted:    red_octocat.txt
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	octofamily/
+
+
+$ git commit -m "Remove all the cats"
+[clean_up 63540fe] Remove all the cats
+ 5 files changed, 5 deletions(-)
+ delete mode 100644 blue_octocat.txt
+ delete mode 100644 octocat.txt
+ delete mode 100644 octofamily/baby_octocat.txt
+ delete mode 100644 octofamily/momma_octocat.txt
+ delete mode 100644 red_octocat.txt
+
+$ git branch
+
+switch to master
+$ git checkout master
+
+merge your changes
+$ git merge clean_up
+Updating 3852b4d..ec6888b
+Fast-forward
+ blue_octocat.txt             |    1 -
+ octocat.txt                  |    1 -
+ octofamily/baby_octocat.txt  |    1 -
+ octofamily/momma_octocat.txt |    1 -
+ red_octocat.txt              |    1 -
+ 5 files changed, 5 deletions(-)
+ delete mode 100644 blue_octocat.txt
+ delete mode 100644 octocat.txt
+ delete mode 100644 octofamily/baby_octocat.txt
+ delete mode 100644 octofamily/momma_octocat.txt
+ delete mode 100644 red_octocat.txt
+
+$ git branch -d clean_up
+Deleted branch clean_up (was ec6888b).
+
+
+$ git branch
+* master
+Use 'git push' to push your repository to your remote
+
+
+$ git status
+
+$ git push
+To https://github.com/try-git/try_git.git
+   3e70b0f..d44411b  master -> master
+
+------------
+>  git log --pretty=oneline - gives you history prettyfied
+7edff61a6f5931790081c40f631e00d95f257a91 (HEAD -> master) Added a comment
+def76e6549200dd8935241311e2ee5c725d21d50 Added a default value
+be6011da2f0b5ed2d873b167919e9f53238ab6c0 Using ARGV
+e8841cc3a6609364b7a3696437010b6d5b92c345 First Commit
+Javiers-MacBook-Pro:hello javiercarey$ 
+
+git log --all --pretty=format:'%h %cd %s (%an)' --since='7 days ago'
+
+git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+
+------------
+aliases for git are in the .gitconfig file in your home directory;
+
+------------
+Note: This section is for folks running a posix-like shell. Windows users and other non-posix shell users can feel free to skip to the next lab.
+
+If your shell supports aliases or shortcuts, then you can add aliases at that level too. Here are the ones I use:
+
+FILE: .profile
+alias gs='git status '
+alias ga='git add '
+alias gb='git branch '
+alias gc='git commit'
+alias gd='git diff'
+alias go='git checkout '
+alias gk='gitk --all&'
+alias gx='gitx --all'
+
+alias got='git '
+alias get='git '
+
+------------
+
+git pull 
+===
+git fetch + git merge origin/master
+
+
+
+---------
+you setup a clone 
+git clone ....
+then you and the clone know about each other , so git push and pull are fine as
+git push ...
+git pull ...
+
+but then there's a shared repository that's just bare - 
+ git clone --bare <source repo> <dest repo>
+
+ git clone --bare hello hello.git
+
+convention is that bare repo has name *.git
+this repo doesn't have any files, just the git changes
+when you clone it it's sync'd
+
+then you add the repo as one available for pushing changes to:
+
+ git remote add shared ../hello.git
+
+ git push shared master 
+
+you push your changes to the shared bare clone thing
+git push shared master 
+
+I don't know if 'shared' is a keyword or seomthing we named the sharing bare repo ... 
+master is def the branch of the code you want to make sure you're pushing
+
+then you want others to share this repo, or pull from it. 
+they have to ID it first as a clone
+then they can pull changes down. 
+git remote add shared ../hello.git
+
+list your remote branches 
+git branch -a
+
+
+Javiers-MacBook-Pro:hello javiercarey$ git push
+fatal: No configured push destination.
+Either specify the URL from the command-line or configure a remote repository using
+
+    git remote add <name> <url>
+
+and then push using the remote name
+
+    git push <name>
+
+Javiers-MacBook-Pro:hello javiercarey$ git pull
+fatal: No remote repository specified.  Please, specify either a URL or a
+remote name from which new revisions should be fetched.
+
+
+Javiers-MacBook-Pro:cloned_hello javiercarey$ git pull
+From /Users/javiercarey/GitHub/git_tutorial/work/hello
+   41cffdf..2ae0e40  master     -> origin/master
+Already up to date.
+Javiers-MacBook-Pro:cloned_hello javiercarey$ git push
+Everything up-to-date
+Javiers-MacBook-Pro:cloned_hello javiercarey$ 
+
+
+when you clone - they remote repository links get setup automatically, they are given names, remote/origin/master but you also associate your branches with those remote names, so git pull, git fetch, all know what you're trying to do b/c you are on a branch (master ie) and git knows your trying to pull from master on the remote.
+
+
+git remote add shared URL?
+
+git remote add shared ../hello.git
+git branch --track shared master
+git pull shared master
+cat README
+
+so there's a branch locally called shared, that is tracking 'master' branch remotely? by virtue of git branch --track shared master
+
